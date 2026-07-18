@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from src.api.routes.image import router as image_router
-from src.api.routes.ocr import router as ocr_router
+from src.api.routes.image_route import router as image_router
+from src.api.routes.ocr_route import router as ocr_router
 
 router = APIRouter()
 
