@@ -8,11 +8,13 @@ import Setup from "./pages/Setup.jsx";
 import Contact from "./pages/Contact.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import SkipLink from "./components/SkipLink.jsx";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   return (
     <>
       <SkipLink />
+      <ScrollToTop /> {/* Add this line */}
       <Navbar />
       <main id="main-content">
         <Routes>

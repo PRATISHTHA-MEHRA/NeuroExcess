@@ -44,67 +44,79 @@ export default function Setup() {
 
   return (
     <>
-      <PageHero
-        eyebrow={IS_LIVE ? 'Available now' : 'Coming soon'}
-        title={IS_LIVE ? 'Set up NeuroAccess in under a minute' : 'NeuroAccess is finishing development'}
-        lede={
-          IS_LIVE
-            ? 'Install the extension, pick a profile, and start fixing pages immediately.'
-            : "The extension is being built right now. Join the list below and we'll email you the moment it's live on the Chrome Web Store."
-        }
-      >
-        {IS_LIVE ? (
-          <a href={CHROME_STORE_URL} className="btn btn-primary btn-lg" target="_blank" rel="noreferrer">
-            Add to Chrome — free <IconArrowRight width={18} height={18} />
-          </a>
-        ) : (
-          <form className="waitlist-form" onSubmit={handleSubmit}>
-            {submitted ? (
-              <div className="waitlist-success">
-                <IconCheck width={18} height={18} />
-                You're on the list — we'll email you at launch.
-              </div>
-            ) : (
-              <>
-                <label className="sr-only" htmlFor="waitlist-email">Email address</label>
-                <input
-                  id="waitlist-email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit" className="btn btn-primary">
-                  Notify me at launch
-                </button>
-              </>
-            )}
-          </form>
-        )}
-      </PageHero>
-
       <section className="section">
         <div className="container">
           <div className="section-head">
             <span className="eyebrow">Setup guide</span>
             <h2>What installing looks like</h2>
-            <p>This is the exact flow you'll follow once the extension is published — provisioned now so nothing changes at launch.</p>
+            <p>
+              This is the exact flow you'll follow once the extension is
+              published — provisioned now so nothing changes at launch.
+            </p>
           </div>
 
-          <div className="steps-list">
-            {steps.map((s, i) => (
-              <div className="step-row" key={s.title}>
-                <div className="step-number">{String(i + 1).padStart(2, '0')}</div>
-                <div className="step-icon">
-                  <s.icon width={22} height={22} />
+          <div className="setup-layout">
+            <div className="steps-list">
+              {steps.map((s, i) => (
+                <div className="step-row" key={s.title}>
+                  <div className="step-number">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+
+                  <div className="step-icon">
+                    <s.icon width={22} height={22} />
+                  </div>
+
+                  <div className="step-body">
+                    <h3>{s.title}</h3>
+                    <p>{s.text}</p>
+                  </div>
                 </div>
-                <div className="step-body">
-                  <h3>{s.title}</h3>
-                  <p>{s.text}</p>
+              ))}
+
+              <div className="setup-cta">
+                <Link to="/setup" className="btn btn-primary btn-lg">
+                  Get the Extension
+                  <IconArrowRight width={18} height={18} />
+                </Link>
+              </div>
+            </div>
+
+            <div className="setup-graphic">
+              <div className="browser-window">
+                <div className="browser-top">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+
+                <div className="browser-content">
+                  <div className="browser-card active">
+                    <div className="browser-icon"></div>
+                    <div>
+                      <h4>Low Vision</h4>
+                      <p>Contrast Enhanced</p>
+                    </div>
+                  </div>
+
+                  <div className="browser-card">
+                    <div className="browser-icon"></div>
+                    <div>
+                      <h4>Screen Reader</h4>
+                      <p>Alt text generated</p>
+                    </div>
+                  </div>
+
+                  <div className="browser-card">
+                    <div className="browser-icon"></div>
+                    <div>
+                      <h4>Keyboard Mode</h4>
+                      <p>Focus improved</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
@@ -115,13 +127,23 @@ export default function Setup() {
             <div className="dev-install-head">
               <span className="eyebrow">For testers & developers</span>
               <h2>Load it unpacked, before the store listing goes live</h2>
-              <p>If you have access to the source build, you can load NeuroAccess as an unpacked extension in Chrome for early testing.</p>
+              <p>
+                If you have access to the source build, you can load NeuroAccess
+                as an unpacked extension in Chrome for early testing.
+              </p>
             </div>
             <ol className="dev-install-steps">
               <li>Download or clone the extension source to your machine.</li>
-              <li>Open <code>chrome://extensions</code> in Chrome.</li>
-              <li>Turn on <strong>Developer mode</strong> in the top-right corner.</li>
-              <li>Click <strong>Load unpacked</strong> and select the extension's <code>dist/</code> folder.</li>
+              <li>
+                Open <code>chrome://extensions</code> in Chrome.
+              </li>
+              <li>
+                Turn on <strong>Developer mode</strong> in the top-right corner.
+              </li>
+              <li>
+                Click <strong>Load unpacked</strong> and select the extension's{" "}
+                <code>dist/</code> folder.
+              </li>
               <li>Pin NeuroAccess from the toolbar puzzle-piece menu.</li>
             </ol>
           </div>
@@ -133,7 +155,10 @@ export default function Setup() {
           <div className="cta-banner">
             <div>
               <h2>Want early access?</h2>
-              <p>We're inviting a small group of testers before the public launch.</p>
+              <p>
+                We're inviting a small group of testers before the public
+                launch.
+              </p>
             </div>
             <Link to="/contact" className="btn cta-banner-btn">
               Request early access <IconArrowRight width={18} height={18} />
@@ -159,6 +184,115 @@ export default function Setup() {
           background: var(--surface);
           color: var(--text);
         }
+        .setup-layout{
+    display:grid;
+    grid-template-columns:1.2fr .9fr;
+    gap:70px;
+    align-items:start;
+}
+
+.setup-cta{
+    margin-top:40px;
+}
+
+.setup-graphic {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 120px;
+    transform: translateX(60px); 
+    transform: translateY(-30px);
+}
+
+.browser-window{
+    width:340px;
+    border-radius:22px;
+    overflow:hidden;
+    background:var(--surface);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-lg);
+}
+
+.browser-top{
+    height:42px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 16px;
+    background:var(--bg-soft);
+}
+
+.browser-top span{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--border-strong);
+}
+
+.browser-content{
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.browser-card{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    padding:16px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:var(--bg-soft);
+    transition:.25s;
+}
+
+.browser-card.active{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-soft);
+}
+
+.browser-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:var(--primary-soft);
+    position:relative;
+}
+
+.browser-icon::after{
+    content:"✓";
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    color:var(--primary);
+    font-weight:700;
+}
+
+.browser-card h4{
+    margin:0;
+    font-size:15px;
+}
+
+.browser-card p{
+    margin:4px 0 0;
+    font-size:13px;
+    color:var(--text-muted);
+}
+
+@media(max-width:900px){
+
+.setup-layout{
+    grid-template-columns:1fr;
+}
+
+.setup-graphic{
+    display:none;
+}
+
+}
         .waitlist-form input:focus { border-color: var(--primary); }
         .waitlist-success {
           display: flex;
@@ -225,5 +359,5 @@ export default function Setup() {
         }
       `}</style>
     </>
-  )
+  );
 }
