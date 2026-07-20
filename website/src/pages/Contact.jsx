@@ -48,6 +48,35 @@ export default function Contact() {
         eyebrow="We read every message"
         title="Tell us what's getting in your way"
         lede="Bug reports and accessibility feedback shape the roadmap directly — this is one of the fastest ways to change what ships next."
+        rightContent={
+          <div className="contact-hero-graphic">
+            <div className="hero-message primary">
+              <div className="hero-avatar">✓</div>
+              <div>
+                <h4>Accessibility Report</h4>
+                <p>Contrast issue detected</p>
+              </div>
+            </div>
+
+            <div className="hero-message">
+              <div className="hero-avatar">💬</div>
+              <div>
+                <h4>User Feedback</h4>
+                <p>Keyboard navigation improved</p>
+              </div>
+            </div>
+
+            <div className="hero-message">
+              <div className="hero-avatar">✉</div>
+              <div>
+                <h4>Support</h4>
+                <p>Average response: 2 business days</p>
+              </div>
+            </div>
+
+            <div className="hero-line"></div>
+          </div>
+        }
       />
 
       <section className="section contact-section">
@@ -63,28 +92,43 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form">
-                {error && (
-                  <div className="form-error">
-                    {error}
-                  </div>
-                )}
-                
+                {error && <div className="form-error">{error}</div>}
+
                 <div className="form-row">
                   <div className="form-field">
                     <label htmlFor="name">Name</label>
-                    <input id="name" required value={form.name} onChange={update('name')} placeholder="Your name" />
+                    <input
+                      id="name"
+                      required
+                      value={form.name}
+                      onChange={update("name")}
+                      placeholder="Your name"
+                    />
                   </div>
                   <div className="form-field">
                     <label htmlFor="email">Email</label>
-                    <input id="email" type="email" required value={form.email} onChange={update('email')} placeholder="you@example.com" />
+                    <input
+                      id="email"
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={update("email")}
+                      placeholder="you@example.com"
+                    />
                   </div>
                 </div>
 
                 <div className="form-field">
                   <label htmlFor="topic">Topic</label>
-                  <select id="topic" value={form.topic} onChange={update('topic')}>
+                  <select
+                    id="topic"
+                    value={form.topic}
+                    onChange={update("topic")}
+                  >
                     {topics.map((t) => (
-                      <option key={t} value={t}>{t}</option>
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -96,13 +140,17 @@ export default function Contact() {
                     required
                     rows={6}
                     value={form.message}
-                    onChange={update('message')}
+                    onChange={update("message")}
                     placeholder="What happened, and what page or profile were you using?"
                   />
                 </div>
 
-                <button type="submit" disabled={loading} className="btn btn-primary btn-lg btn-block">
-                  {loading ? 'Sending...' : 'Send message'}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn btn-primary btn-lg btn-block"
+                >
+                  {loading ? "Sending..." : "Send message"}
                 </button>
               </form>
             )}
@@ -115,7 +163,11 @@ export default function Contact() {
               </div>
               <div>
                 <h4>Email support</h4>
-                <p>support@neuroaccess.app<br />Replies within two business days.</p>
+                <p>
+                  support@neuroaccess.app
+                  <br />
+                  Replies within two business days.
+                </p>
               </div>
             </div>
             <div className="contact-side-item card">
@@ -124,7 +176,10 @@ export default function Contact() {
               </div>
               <div>
                 <h4>Accessibility feedback</h4>
-                <p>Found a barrier the extension missed? Flag it — this queue is reviewed first.</p>
+                <p>
+                  Found a barrier the extension missed? Flag it — this queue is
+                  reviewed first.
+                </p>
               </div>
             </div>
             <div className="contact-side-item card">
@@ -133,7 +188,9 @@ export default function Contact() {
               </div>
               <div>
                 <h4>Privacy questions</h4>
-                <p>Ask us anything about what runs locally versus in the cloud.</p>
+                <p>
+                  Ask us anything about what runs locally versus in the cloud.
+                </p>
               </div>
             </div>
           </div>
@@ -158,6 +215,98 @@ export default function Contact() {
           font-size: 14px;
           line-height: 1.4;
         }
+        .contact-hero-graphic{
+    width:340px;
+    margin-left:auto;
+    position:relative;
+}
+
+.hero-message{
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+    padding:18px;
+    margin-bottom:18px;
+
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.hero-message:nth-child(2){
+    margin-left:36px;
+    animation-delay:.6s;
+}
+
+.hero-message:nth-child(3){
+    margin-left:14px;
+    animation-delay:1.2s;
+}
+
+.hero-message.primary{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px var(--primary-soft);
+}
+
+.hero-avatar{
+    width:46px;
+    height:46px;
+
+    border-radius:14px;
+
+    background:var(--primary-soft);
+    color:var(--primary);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:700;
+    font-size:18px;
+
+    flex-shrink:0;
+}
+
+.hero-message h4{
+    margin:0;
+    font-size:15px;
+}
+
+.hero-message p{
+    margin:4px 0 0;
+    font-size:13px;
+    color:var(--text-muted);
+}
+
+.hero-line{
+    position:absolute;
+    left:23px;
+    top:60px;
+
+    width:2px;
+    height:180px;
+
+    background:linear-gradient(
+        transparent,
+        var(--primary),
+        transparent
+    );
+
+    opacity:.25;
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-8px);
+    }
+}
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-field { display: flex; flex-direction: column; gap: 8px; }
         .form-field label { font-size: 14px; font-weight: 500; color: var(--text); }
@@ -212,5 +361,5 @@ export default function Contact() {
         }
       `}</style>
     </>
-  )
+  );
 }
