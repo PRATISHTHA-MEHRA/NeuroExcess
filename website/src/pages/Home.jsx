@@ -4,6 +4,12 @@ import {
   IconEye, IconContrast, IconMic, IconSpeaker, IconKeyboard, IconImage,
   IconShield, IconArrowRight, IconCheck, IconStar,
 } from '../components/Icons.jsx'
+import img from '../assets/img.png'
+import { useState } from "react";
+import { useAuth } from "../Contexts/AuthContext.jsx";
+import AuthModal from "../components/Auth.jsx";
+import darkImg from "../assets/dark-img.png";
+import { useTheme } from "../theme/ThemeContext.jsx";
 
 const groups = [
   { icon: IconEye, title: 'Blind & low vision', text: 'AI image labeling, OCR, and ARIA fixes make pages make sense out loud.' },
@@ -38,6 +44,19 @@ const testimonials = [
 ]
 
 export default function Home() {
+  const { theme } = useTheme();
+  const { isAuthenticated } = useAuth();
+
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState("login");
+
+  function handleAddToChrome(e) {
+    if (!isAuthenticated) {
+      e.preventDefault(); 
+      setAuthMode("login");
+      setAuthModalOpen(true); 
+    }
+  }
   return (
     <>
       {/* ============ HERO ============ */}
@@ -51,12 +70,18 @@ export default function Home() {
               <span className="hero-accent">one click away.</span>
             </h1>
             <p className="lede">
-              NeuroAccess fixes contrast, labels images, reads pages aloud, and repairs
-              keyboard navigation directly in your browser — privacy-first, and ready
-              in seconds on any site.
+              Making every website accessible in seconds. NeuroAccess uses AI to
+              detect and repair accessibility barriers—improving readability,
+              navigation, image understanding, and voice interaction for people
+              with visual, cognitive, motor, and reading disabilities, all while
+              keeping your data private.
             </p>
             <div className="hero-cta-row">
-              <Link to="/setup" className="btn btn-primary btn-lg">
+              <Link
+                to="/setup"
+                className="btn btn-primary btn-lg"
+                onClick={handleAddToChrome}
+              >
                 Add to Chrome — free <IconArrowRight width={18} height={18} />
               </Link>
               <Link to="/features" className="btn btn-secondary btn-lg">
@@ -84,8 +109,8 @@ export default function Home() {
             <span className="eyebrow">Built for real barriers</span>
             <h2>Every profile fixes a different kind of friction</h2>
             <p>
-              Accessibility needs aren't one-size-fits-all. NeuroAccess ships four
-              starting profiles, then lets you fine-tune per site.
+              Accessibility needs aren't one-size-fits-all. NeuroAccess ships
+              four starting profiles, then lets you fine-tune per site.
             </p>
           </div>
           <div className="groups-grid">
@@ -108,14 +133,20 @@ export default function Home() {
           <div className="split-visual">
             <div className="split-image card">
               <div className="split-image-inner">
-                <IconEye width={40} height={40} />
+                <img
+                  src={theme === "dark" ? darkImg : img}
+                  alt="NeuroAccess features"
+                  className="features-img"
+                />
               </div>
             </div>
             <div className="split-stat card">
               <div className="split-stat-number">4</div>
               <div>
                 <strong>Accessibility profiles</strong>
-                <span>Default, Blind, Low Vision, Dyslexic — plus per-site overrides</span>
+                <span>
+                  Default, Blind, Low Vision, Dyslexic — plus per-site overrides
+                </span>
               </div>
             </div>
           </div>
@@ -123,14 +154,24 @@ export default function Home() {
             <span className="eyebrow">Independence, not intervention</span>
             <h2>Designed to reduce blockers in seconds, not minutes</h2>
             <p className="lede">
-              Forms for school admissions, banking, and healthcare weren't built with
-              every reader in mind. NeuroAccess runs its audit the moment you land on a
-              page, so the fix is ready before frustration sets in.
+              Forms for school admissions, banking, and healthcare weren't built
+              with every reader in mind. NeuroAccess runs its audit the moment
+              you land on a page, so the fix is ready before frustration sets
+              in.
             </p>
             <ul className="split-list">
-              <li><IconCheck width={18} height={18} /> Before/after issue summary on every page</li>
-              <li><IconCheck width={18} height={18} /> Site-level memory, so fixes stick on return visits</li>
-              <li><IconCheck width={18} height={18} /> Machine-readable report export for tracking progress</li>
+              <li>
+                <IconCheck width={18} height={18} /> Before/after issue summary
+                on every page
+              </li>
+              <li>
+                <IconCheck width={18} height={18} /> Site-level memory, so fixes
+                stick on return visits
+              </li>
+              <li>
+                <IconCheck width={18} height={18} /> Machine-readable report
+                export for tracking progress
+              </li>
             </ul>
             <Link to="/features" className="btn btn-secondary">
               Explore all features
@@ -142,7 +183,14 @@ export default function Home() {
       {/* ============ THREE-UP FEATURE CARDS ============ */}
       <section className="section three-up-section">
         <div className="container">
-          <div className="section-head" style={{ margin: '0 auto 48px', textAlign: 'center', maxWidth: 560 }}>
+          <div
+            className="section-head"
+            style={{
+              margin: "0 auto 48px",
+              textAlign: "center",
+              maxWidth: 560,
+            }}
+          >
             <span className="eyebrow">Core toolkit</span>
             <h2>Four ways in, one click deep</h2>
           </div>
@@ -163,7 +211,14 @@ export default function Home() {
       {/* ============ TESTIMONIALS ============ */}
       <section className="section testimonial-section">
         <div className="container">
-          <div className="section-head" style={{ margin: '0 auto 48px', textAlign: 'center', maxWidth: 560 }}>
+          <div
+            className="section-head"
+            style={{
+              margin: "0 auto 48px",
+              textAlign: "center",
+              maxWidth: 560,
+            }}
+          >
             <span className="eyebrow">From early readers</span>
             <h2>What one click changes</h2>
           </div>
@@ -200,7 +255,11 @@ export default function Home() {
                 the extension is in early access.
               </p>
             </div>
-            <Link to="/setup" className="btn cta-banner-btn">
+            <Link
+              to="/setup"
+              className="btn cta-banner-btn"
+              onClick={handleAddToChrome}
+            >
               Add to Chrome <IconArrowRight width={18} height={18} />
             </Link>
           </div>
@@ -341,6 +400,11 @@ export default function Home() {
           .three-up-grid { grid-template-columns: 1fr; }
         }
       `}</style>
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        initialMode={authMode}
+      />
     </>
-  )
+  );
 }

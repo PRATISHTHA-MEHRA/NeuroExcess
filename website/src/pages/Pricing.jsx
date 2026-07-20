@@ -79,54 +79,93 @@ export default function Pricing() {
     <>
       <PageHero
         eyebrow="Simple, transparent pricing"
-        title="Free to start. Upgrade only for AI features you'll actually use."
-        lede="The core extension — contrast, keyboard navigation, TTS, and profiles — is free for everyone, always."
-      >
-        <div className="billing-toggle" role="group" aria-label="Billing period">
-          <button
-            type="button"
-            className={'billing-btn' + (!yearly ? ' is-active' : '')}
-            onClick={() => setYearly(false)}
-            aria-pressed={!yearly}
-          >
-            Monthly
-          </button>
-          <button
-            type="button"
-            className={'billing-btn' + (yearly ? ' is-active' : '')}
-            onClick={() => setYearly(true)}
-            aria-pressed={yearly}
-          >
-            Yearly <span className="billing-save">Save ~15%</span>
-          </button>
-        </div>
-      </PageHero>
+        title="Choose how you'd like to pay"
+        lede="Whether you pay monthly or yearly, every plan includes the same accessibility-first experience. Switch billing anytime."
+        rightContent={
+          <div className="billing-card">
+            <div className="billing-card-header">
+              <span className="billing-label">Billing cycle</span>
+              <h3>Save with yearly billing</h3>
+              <p>
+                Pay annually and save around 15% compared to monthly billing.
+              </p>
+            </div>
+
+            <div
+              className="billing-toggle billing-toggle-large"
+              role="group"
+              aria-label="Billing period"
+            >
+              <button
+                type="button"
+                className={"billing-btn" + (!yearly ? " is-active" : "")}
+                onClick={() => setYearly(false)}
+                aria-pressed={!yearly}
+              >
+                Monthly
+              </button>
+
+              <button
+                type="button"
+                className={"billing-btn" + (yearly ? " is-active" : "")}
+                onClick={() => setYearly(true)}
+                aria-pressed={yearly}
+              >
+                Yearly
+                <span className="billing-save">Save 15%</span>
+              </button>
+            </div>
+
+            <div className="billing-note">
+              <span>✔ Cancel anytime</span>
+              <span>✔ Instant upgrade</span>
+              <span>✔ Secure payments</span>
+            </div>
+          </div>
+        }
+      />
 
       <section className="section">
         <div className="container">
           <div className="pricing-grid">
             {plans.map((p) => (
-              <div className={'pricing-card card' + (p.highlight ? ' is-highlight' : '')} key={p.name}>
-                {p.highlight && <span className="pricing-badge">Most popular</span>}
+              <div
+                className={
+                  "pricing-card card" + (p.highlight ? " is-highlight" : "")
+                }
+                key={p.name}
+              >
+                {p.highlight && (
+                  <span className="pricing-badge">Most popular</span>
+                )}
                 <h3>{p.name}</h3>
                 <p className="pricing-tagline">{p.tagline}</p>
                 <div className="pricing-amount">
                   <span className="pricing-currency">$</span>
-                  <span className="pricing-number">{yearly ? Math.round(p.yearly / 12) : p.monthly}</span>
-                  <span className="pricing-period">/mo{p.priceNote ? `, ${p.priceNote}` : ''}</span>
+                  <span className="pricing-number">
+                    {yearly ? Math.round(p.yearly / 12) : p.monthly}
+                  </span>
+                  <span className="pricing-period">
+                    /mo{p.priceNote ? `, ${p.priceNote}` : ""}
+                  </span>
                 </div>
                 {yearly && p.yearly > 0 && (
                   <p className="pricing-billed">Billed ${p.yearly} yearly</p>
                 )}
                 <Link
-                  to={p.name === 'Teams' ? '/contact' : '/setup'}
-                  className={'btn btn-block ' + (p.highlight ? 'btn-primary' : 'btn-secondary')}
+                  to={p.name === "Teams" ? "/contact" : "/setup"}
+                  className={
+                    "btn btn-block " +
+                    (p.highlight ? "btn-primary" : "btn-secondary")
+                  }
                 >
                   {p.cta}
                 </Link>
                 <ul className="pricing-features">
                   {p.features.map((f) => (
-                    <li key={f}><IconCheck width={17} height={17} /> {f}</li>
+                    <li key={f}>
+                      <IconCheck width={17} height={17} /> {f}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -137,7 +176,14 @@ export default function Pricing() {
 
       <section className="section faq-section">
         <div className="container">
-          <div className="section-head" style={{ margin: '0 auto 40px', textAlign: 'center', maxWidth: 560 }}>
+          <div
+            className="section-head"
+            style={{
+              margin: "0 auto 40px",
+              textAlign: "center",
+              maxWidth: 560,
+            }}
+          >
             <span className="eyebrow">Questions</span>
             <h2>Pricing FAQ</h2>
           </div>
@@ -157,7 +203,10 @@ export default function Pricing() {
           <div className="cta-banner">
             <div>
               <h2>Start free today</h2>
-              <p>No credit card required. Upgrade only when AI features earn their keep.</p>
+              <p>
+                No credit card required. Upgrade only when AI features earn
+                their keep.
+              </p>
             </div>
             <Link to="/setup" className="btn cta-banner-btn">
               Add to Chrome <IconArrowRight width={18} height={18} />
@@ -224,6 +273,68 @@ export default function Pricing() {
           padding: 5px 14px;
           border-radius: var(--radius-pill);
         }
+        .billing-card{
+          max-width:430px;
+          margin-left:auto;
+
+          padding:32px;
+
+          background:var(--surface);
+
+          border:1px solid var(--border);
+
+          border-radius:24px;
+
+          box-shadow:var(--shadow-lg);
+      }
+
+      .billing-card-header h3{
+          margin:8px 0;
+          font-size:26px;
+      }
+
+      .billing-card-header p{
+          color:var(--text-muted);
+          margin-bottom:28px;
+      }
+
+      .billing-label{
+          display:inline-flex;
+          padding:6px 12px;
+
+          border-radius:999px;
+
+          background:var(--primary-soft);
+
+          color:var(--primary);
+
+          font-size:12px;
+          font-weight:600;
+          text-transform:uppercase;
+          letter-spacing:.05em;
+      }
+
+      .billing-toggle-large{
+          display:flex;
+          width:100%;
+          padding:6px;
+      }
+
+      .billing-toggle-large .billing-btn{
+          flex:1;
+          justify-content:center;
+          padding:14px 18px;
+      }
+
+      .billing-note{
+          margin-top:24px;
+
+          display:grid;
+          gap:10px;
+
+          color:var(--text-muted);
+          font-size:14px;
+      }
         .pricing-card h3 { font-size: 22px; margin-bottom: 6px; }
         .pricing-tagline { font-size: 14.5px; min-height: 44px; }
         .pricing-amount { display: flex; align-items: baseline; gap: 4px; margin: 8px 0 4px; }
@@ -267,5 +378,5 @@ export default function Pricing() {
         }
       `}</style>
     </>
-  )
+  );
 }

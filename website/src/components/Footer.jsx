@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { IconPuzzle, IconShield } from './Icons.jsx'
+import logo from "../assets/logo.png";
 
 export default function Footer() {
   return (
@@ -7,15 +8,13 @@ export default function Footer() {
       <div className="container footer-grid">
         <div className="footer-brand">
           <div className="nav-brand" style={{ marginBottom: 14 }}>
-            <span className="nav-brand-mark">
-              <IconPuzzle width={20} height={20} />
-            </span>
+            <img src={logo} alt="NeuroAccess Logo" className="nav-brand-logo" />
             NeuroAccess
           </div>
           <p>
-            A privacy-first browser extension that clears accessibility barriers in one click —
-            built for blind, low-vision, dyslexic, and motor-impaired readers, and anyone
-            whose eyes need a break.
+            A privacy-first browser extension that clears accessibility barriers
+            in one click — built for blind, low-vision, dyslexic, and
+            motor-impaired readers, and anyone whose eyes need a break.
           </p>
           <p className="footer-privacy">
             <IconShield width={16} height={16} />
@@ -26,32 +25,51 @@ export default function Footer() {
         <div className="footer-col">
           <h4>Product</h4>
           <ul>
-            <li><Link to="/features">Features</Link></li>
-            <li><Link to="/pricing">Pricing</Link></li>
-            <li><Link to="/setup">Get the extension</Link></li>
+            <li>
+              <Link to="/features">Features</Link>
+            </li>
+            <li>
+              <Link to="/pricing">Pricing</Link>
+            </li>
+            <li>
+              <Link to="/setup">Get the extension</Link>
+            </li>
           </ul>
         </div>
 
         <div className="footer-col">
           <h4>Support</h4>
           <ul>
-            <li><Link to="/contact">Contact us</Link></li>
-            <li><Link to="/setup">Setup guide</Link></li>
-            <li><a href="#accessibility-statement">Accessibility statement</a></li>
+            <li>
+              <Link to="/contact">Contact us</Link>
+            </li>
+            <li>
+              <Link to="/setup">Setup guide</Link>
+            </li>
+            <li>
+              <a href="#accessibility-statement">Accessibility statement</a>
+            </li>
           </ul>
         </div>
 
         <div className="footer-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#privacy">Privacy policy</a></li>
-            <li><a href="#terms">Terms of use</a></li>
+            <li>
+              <a href="#privacy">Privacy policy</a>
+            </li>
+            <li>
+              <a href="#terms">Terms of use</a>
+            </li>
           </ul>
         </div>
       </div>
 
       <div className="container footer-bottom">
-        <p>© {new Date().getFullYear()} NeuroAccess. Not a medical device or treatment.</p>
+        <p>
+          © {new Date().getFullYear()} NeuroAccess. Not a medical device or
+          treatment.
+        </p>
       </div>
 
       <style>{`
@@ -59,6 +77,11 @@ export default function Footer() {
           border-top: 1px solid var(--border);
           background: var(--bg-soft);
           padding: 64px 0 0;
+        }
+        .nav-brand-logo {
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
         }
         .footer-grid {
           display: grid;
@@ -99,5 +122,5 @@ export default function Footer() {
         }
       `}</style>
     </footer>
-  )
+  );
 }

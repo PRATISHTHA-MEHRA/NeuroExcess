@@ -4,6 +4,7 @@ import { useTheme } from '../theme/ThemeContext.jsx'
 import { useAuth } from '../Contexts/AuthContext.jsx'
 import { IconSun, IconMoon, IconMenu, IconClose, IconPuzzle } from './Icons.jsx'
 import AuthModal from './Auth.jsx'
+import logo from "../assets/logo.png";
 
 const links = [
   { to: '/features', label: 'Features' },
@@ -32,98 +33,135 @@ export default function Navbar() {
 
   return (
     <>
-    <header className="nav">
-      <div className="container nav-inner">
-        <Link to="/" className="nav-brand" onClick={() => setOpen(false)}>
-          <span className="nav-brand-mark">
-            <IconPuzzle width={20} height={20} />
-          </span>
-          NeuroAccess
-        </Link>
-
-        <nav className="nav-links" aria-label="Primary">
-          {links.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              className={({ isActive }) => 'nav-link' + (isActive ? ' is-active' : '')}
-            >
-              {l.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        <div className="nav-actions">
-          <button
-            type="button"
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
-          >
-            {theme === 'light' ? <IconMoon width={18} height={18} /> : <IconSun width={18} height={18} />}
-          </button>
-
-          {isAuthenticated ? (
-            <div className="nav-user">
-              <span className="nav-user-name">{user?.name || user?.username}</span>
-              <button type="button" className="btn btn-ghost nav-auth-btn" onClick={handleLogout}>
-                Log out
-              </button>
-            </div>
-          ) : (
-            <button type="button" className="btn btn-ghost nav-auth-btn" onClick={() => openAuth('login')}>
-              Log in
-            </button>
-          )}
-
-          <Link to="/setup" className="btn btn-primary nav-cta">
-            Add to Chrome
+      <header className="nav">
+        <div className="container nav-inner">
+          <Link to="/" className="nav-brand" onClick={() => setOpen(false)}>
+            <img src={logo} alt="NeuroAccess Logo" className="nav-brand-logo" />
+            NeuroAccess
           </Link>
 
-          <button
-            type="button"
-            className="nav-burger"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-          >
-            {open ? <IconClose /> : <IconMenu />}
-          </button>
-        </div>
-      </div>
-
-      {open && (
-        <div className="nav-mobile" role="dialog" aria-label="Mobile navigation">
-          <div className="container">
+          <nav className="nav-links" aria-label="Primary">
             {links.map((l) => (
-              <NavLink key={l.to} to={l.to} className="nav-mobile-link" onClick={() => setOpen(false)}>
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({ isActive }) =>
+                  "nav-link" + (isActive ? " is-active" : "")
+                }
+              >
                 {l.label}
               </NavLink>
             ))}
+          </nav>
+
+          <div className="nav-actions">
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={
+                theme === "light"
+                  ? "Switch to dark theme"
+                  : "Switch to light theme"
+              }
+            >
+              {theme === "light" ? (
+                <IconMoon width={18} height={18} />
+              ) : (
+                <IconSun width={18} height={18} />
+              )}
+            </button>
 
             {isAuthenticated ? (
-              <div className="nav-mobile-auth">
-                <span className="nav-mobile-user">{user?.name || user?.username}</span>
-                <button type="button" className="btn btn-ghost btn-block" onClick={handleLogout}>
+              <div className="nav-user">
+                <span className="nav-user-name">
+                  {user?.name || user?.username}
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-ghost nav-auth-btn"
+                  onClick={handleLogout}
+                >
                   Log out
                 </button>
               </div>
             ) : (
-              <div className="nav-mobile-auth">
-                <button type="button" className="btn btn-ghost btn-block" onClick={() => openAuth('login')}>
-                  Log in
-                </button>
-              </div>
+              <button
+                type="button"
+                className="btn btn-primary nav-cta"
+                onClick={() => openAuth("login")}
+              >
+                Log in
+              </button>
             )}
 
-            <Link to="/setup" className="btn btn-primary btn-block" onClick={() => setOpen(false)}>
-              Add to Chrome — it's free
-            </Link>
+            <button
+              type="button"
+              className="nav-burger"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-label={open ? "Close menu" : "Open menu"}
+            >
+              {open ? <IconClose /> : <IconMenu />}
+            </button>
           </div>
         </div>
-      )}
 
-      <style>{`
+        {open && (
+          <div
+            className="nav-mobile"
+            role="dialog"
+            aria-label="Mobile navigation"
+          >
+            <div className="container">
+              {links.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  className="nav-mobile-link"
+                  onClick={() => setOpen(false)}
+                >
+                  {l.label}
+                </NavLink>
+              ))}
+
+              {isAuthenticated ? (
+                <div className="nav-mobile-auth">
+                  <span className="nav-mobile-user">
+                    {user?.name || user?.username}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-block"
+                    onClick={handleLogout}
+                  >
+                    Log out
+                  </button>
+                </div>
+              ) : (
+                <div className="nav-mobile-auth">
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-block"
+                    onClick={() => openAuth("login")}
+                  >
+                    Log in
+                  </button>
+                </div>
+              )}
+
+              <Link
+                to="/setup"
+                className="btn btn-primary btn-block"
+                onClick={() => setOpen(false)}
+              >
+                Add to Chrome — it's free
+              </Link>
+            </div>
+          </div>
+        )}
+
+        <style>{`
         .nav {
           position: sticky;
           top: 0;
@@ -149,15 +187,11 @@ export default function Navbar() {
           color: var(--text);
           flex-shrink: 0;
         }
-        .nav-brand-mark {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 34px;
-          height: 34px;
-          border-radius: 10px;
-          background: var(--primary);
-          color: var(--on-primary);
+        .nav-brand-logo {
+          width: 50px;
+          height: 50px;
+          object-fit: contain;
+        }
         }
         .nav-links {
           display: flex;
@@ -278,13 +312,13 @@ export default function Navbar() {
           .nav-burger { display: inline-flex; }
         }
       `}</style>
-    </header>
+      </header>
 
-    <AuthModal
-      isOpen={authModalOpen}
-      onClose={() => setAuthModalOpen(false)}
-      initialMode={authMode}
-    />
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        initialMode={authMode}
+      />
     </>
-  )
+  );
 }

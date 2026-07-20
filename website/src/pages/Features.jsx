@@ -74,6 +74,54 @@ export default function Features() {
         eyebrow="Everything, in one extension"
         title="Every feature exists to remove one specific barrier"
         lede="No feature here is decorative. Each one maps to a real reading, seeing, hearing, or moving barrier that shows up on ordinary websites."
+        rightContent={
+          <div className="feature-preview">
+            <div className="feature-window">
+              <div className="window-header">
+                <span className="dot"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+
+                <div className="window-title">NeuroAccess</div>
+              </div>
+
+              <div className="window-body">
+                <div className="preview-card success">
+                  <IconContrast width={18} height={18} />
+                  <div>
+                    <strong>Contrast Optimized</strong>
+                    <span>WCAG AA Compliant</span>
+                  </div>
+                </div>
+
+                <div className="preview-card">
+                  <IconImage width={18} height={18} />
+                  <div>
+                    <strong>Image Described</strong>
+                    <span>AI generated alt text</span>
+                  </div>
+                </div>
+
+                <div className="preview-card">
+                  <IconKeyboard width={18} height={18} />
+                  <div>
+                    <strong>Keyboard Ready</strong>
+                    <span>Focus order repaired</span>
+                  </div>
+                </div>
+
+                <div className="preview-score">
+                  <div className="score-circle">98</div>
+
+                  <div>
+                    <h4>Accessibility Score</h4>
+                    <p>Excellent</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       />
 
       <section className="section">
@@ -89,7 +137,9 @@ export default function Features() {
                   <p>{f.text}</p>
                   <ul className="feature-row-points">
                     {f.points.map((p) => (
-                      <li key={p}><IconCheck width={16} height={16} /> {p}</li>
+                      <li key={p}>
+                        <IconCheck width={16} height={16} /> {p}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -104,7 +154,10 @@ export default function Features() {
           <div className="section-head">
             <span className="eyebrow">Who it's for</span>
             <h2>Barrier to support, mapped directly</h2>
-            <p>NeuroAccess is an assistive tool, not a medical treatment — it helps people navigate and read the web more effectively.</p>
+            <p>
+              NeuroAccess is an assistive tool, not a medical treatment — it
+              helps people navigate and read the web more effectively.
+            </p>
           </div>
 
           <div className="mapping-table card">
@@ -129,7 +182,10 @@ export default function Features() {
           <div className="cta-banner cta-banner-flat">
             <div>
               <h2>Ready to try one-click mode?</h2>
-              <p>Install the extension and run your first audit in under a minute.</p>
+              <p>
+                Install the extension and run your first audit in under a
+                minute.
+              </p>
             </div>
             <Link to="/setup" className="btn btn-primary btn-lg">
               Get the extension <IconArrowRight width={18} height={18} />
@@ -195,6 +251,178 @@ export default function Features() {
         }
         .cta-banner-flat h2 { color: var(--text); font-size: clamp(24px, 3vw, 32px); }
         .cta-banner-flat p { color: var(--text-muted); }
+        .feature-preview{
+          display:flex;
+          justify-content:center;
+        }
+
+      .feature-window{
+
+          width:420px;
+          border-radius:24px;
+
+          background:var(--surface);
+
+          border:1px solid var(--border);
+
+          box-shadow:
+              0 20px 60px rgba(0,0,0,.08);
+
+          overflow:hidden;
+      }
+
+      .window-header{
+
+          display:flex;
+          align-items:center;
+
+          gap:8px;
+
+          padding:18px 22px;
+
+          border-bottom:1px solid var(--border);
+
+          background:var(--bg-soft);
+      }
+
+      .dot{
+
+          width:10px;
+          height:10px;
+
+          border-radius:50%;
+
+          background:var(--border-strong);
+      }
+
+      .window-title{
+
+          margin-left:auto;
+
+          font-size:13px;
+
+          color:var(--text-muted);
+
+          font-weight:600;
+      }
+
+      .window-body{
+
+          padding:22px;
+
+          display:flex;
+
+          flex-direction:column;
+
+          gap:18px;
+      }
+
+      .preview-card{
+
+          display:flex;
+
+          align-items:center;
+
+          gap:16px;
+
+          padding:16px;
+
+          border-radius:16px;
+
+          background:var(--bg-soft);
+
+          border:1px solid var(--border);
+
+          transition:.25s;
+      }
+
+      .preview-card:hover{
+
+          transform:translateY(-3px);
+
+          border-color:var(--primary);
+      }
+
+      .preview-card svg{
+
+          color:var(--primary);
+
+          flex-shrink:0;
+      }
+
+      .preview-card strong{
+
+          display:block;
+
+          color:var(--text);
+
+          margin-bottom:3px;
+      }
+
+      .preview-card span{
+
+          color:var(--text-muted);
+
+          font-size:14px;
+      }
+
+      .success{
+
+          background:var(--primary-soft);
+      }
+
+      .preview-score{
+
+          margin-top:8px;
+
+          display:flex;
+
+          align-items:center;
+
+          gap:18px;
+
+          padding:18px;
+
+          border-radius:18px;
+
+          border:1px solid var(--border);
+
+          background:var(--surface);
+      }
+
+      .score-circle{
+
+          width:74px;
+
+          height:74px;
+
+          border-radius:50%;
+
+          background:var(--primary);
+
+          color:white;
+
+          display:flex;
+
+          align-items:center;
+
+          justify-content:center;
+
+          font-size:24px;
+
+          font-weight:700;
+      }
+
+      .preview-score h4{
+
+          margin-bottom:4px;
+      }
+
+      .preview-score p{
+
+          color:var(--text-muted);
+      }
+              
 
         @media (max-width: 700px) {
           .feature-row { grid-template-columns: 1fr; }
@@ -205,5 +433,5 @@ export default function Features() {
         }
       `}</style>
     </>
-  )
+  );
 }
