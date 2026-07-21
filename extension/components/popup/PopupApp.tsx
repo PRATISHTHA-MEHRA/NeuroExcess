@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { useActiveTabHostname } from "~hooks/useActiveTabHostname"
+import { useAuditSummary } from "~hooks/useAuditSummary"
 import { useEffectiveSettings } from "~hooks/useEffectiveSettings"
 import { FEATURE_META } from "~lib/featureMeta"
 import type { FeatureId, GlobalSettings, SettingsPatch, SiteOverride } from "~lib/settings/schema"
@@ -9,11 +10,13 @@ import { CalmThemeOptions } from "./CalmThemeOptions"
 import { ContrastFixerOptions } from "./ContrastFixerOptions"
 import { CurrentSiteHeader } from "./CurrentSiteHeader"
 import { FeatureToggleRow } from "./FeatureToggleRow"
+import { GlobalModeSummary } from "./GlobalModeSummary"
 
 export function PopupApp() {
   const hostname = useActiveTabHostname()
   const { effective, override, isLoading, updateGlobal, updateSiteOverride, clearSiteOverride } =
     useEffectiveSettings(hostname)
+  const auditSummary = useAuditSummary(hostname)
   const [isCustomizing, setIsCustomizing] = useState(false)
   const tabs = globalThis.chrome.tabs
 
@@ -71,6 +74,16 @@ export function PopupApp() {
         </div>
       </div>
       <div className="mt-1">
+        <FeatureToggleRow
+          icon={FEATURE_META.globalMode.icon}
+          label={FEATURE_META.globalMode.label}
+          description={FEATURE_META.globalMode.description}
+          enabled={effective.globalMode.enabled}
+          isOverridden={override.globalMode !== undefined}
+          onToggle={(enabled) => applyPatch("globalMode", { enabled })}>
+          {effective.globalMode.enabled ? <GlobalModeSummary summary={auditSummary} /> : null}
+        </FeatureToggleRow>
+
         <FeatureToggleRow
           icon={FEATURE_META.contrastFixer.icon}
           label={FEATURE_META.contrastFixer.label}

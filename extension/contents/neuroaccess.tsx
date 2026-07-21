@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react"
 
 import { calmThemeController } from "~features/calm-theme"
 import { contrastFixerController } from "~features/contrast-fixer"
+import { globalModeController } from "~features/global-mode"
+import { GlobalModeSummaryOverlay } from "~features/global-mode/GlobalModeSummaryOverlay"
 import { RulerOverlay } from "~features/reading-ruler/RulerOverlay"
 import { skipLinksController } from "~features/skip-links"
 import { ReadingBarOverlay } from "~features/syllable-highlighting/ReadingBarOverlay"
@@ -39,6 +41,7 @@ export default function NeuroAccessRoot() {
       unsubscribe()
       calmThemeController.remove()
       skipLinksController.remove()
+      globalModeController.remove()
     }
   }, [])
 
@@ -86,11 +89,22 @@ export default function NeuroAccessRoot() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skipLinksKey])
 
+  const globalModeKey = JSON.stringify(settings.globalMode)
+  useEffect(() => {
+    if (settings.globalMode.enabled) {
+      globalModeController.apply(settings.globalMode)
+    } else {
+      globalModeController.remove()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [globalModeKey])
+
   return (
     <>
       <RulerOverlay settings={settings.readingRuler} />
       <ReadingBarOverlay settings={settings.syllableHighlighting} />
       <StandaloneReaderWidget ref={standaloneReaderRef} rate={settings.syllableHighlighting.speechRate} />
+      <GlobalModeSummaryOverlay enabled={settings.globalMode.enabled} hostname={location.hostname} />
     </>
   )
 }
