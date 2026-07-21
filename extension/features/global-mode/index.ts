@@ -5,7 +5,7 @@ import { auditDocument, auditSubtree } from "./auditPage"
 import { applyAutoFixes, revertAutoFixes } from "./autoFix"
 import type { AuditIssue } from "./issueTypes"
 import { clearAuditSummary, setAuditSummary } from "./resultStore"
-import { accumulate, toSummary, type RunningTotals } from "./summarize"
+import { accumulate, toSummary, untrackElements, type RunningTotals } from "./summarize"
 import type { FeatureController } from "~features/types"
 
 let applied = false
@@ -14,6 +14,10 @@ let unsubscribeMutations: (() => void) | undefined
 
 function persist(): void {
   void setAuditSummary(location.hostname, toSummary(totals))
+}
+
+function collectElements(root: HTMLElement): HTMLElement[] {
+  return [root, ...Array.from(root.querySelectorAll<HTMLElement>("*"))]
 }
 
 export const globalModeController: FeatureController<GlobalModeSettings> = {
@@ -31,17 +35,24 @@ export const globalModeController: FeatureController<GlobalModeSettings> = {
     // for as long as Global Mode stays on, instead of only auditing the DOM as it was at click time.
     unsubscribeMutations = subscribeToMutations((mutations) => {
       const newIssues: AuditIssue[] = []
+      let removedAny = false
+
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (!(node instanceof HTMLElement)) return
           newIssues.push(...auditSubtree(node))
         })
+        mutation.removedNodes.forEach((node) => {
+          if (!(node instanceof HTMLElement)) return
+          if (untrackElements(totals, collectElements(node))) removedAny = true
+        })
       })
-      if (newIssues.length === 0) return
 
-      const { fixed: newlyFixed } = applyAutoFixes(newIssues)
-      totals = accumulate(totals, newIssues, newlyFixed)
-      persist()
+      if (newIssues.length > 0) {
+        const { fixed: newlyFixed } = applyAutoFixes(newIssues)
+        totals = accumulate(totals, newIssues, newlyFixed)
+      }
+      if (newIssues.length > 0 || removedAny) persist()
     })
   },
 

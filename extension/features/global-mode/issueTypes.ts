@@ -23,12 +23,13 @@ export const CATEGORY_LABELS: Record<IssueCategory, string> = {
 }
 
 // Categories Global Mode can fix by purely adding an attribute — never rewrites structure,
-// text content, or anything a screen reader-dependent user is already relying on. Heading order
-// and missing landmarks are flagged but left for manual review: reshuffling heading levels or
-// inventing a <main> wrapper risks breaking a page's existing layout or semantics.
+// text content, or anything a screen reader-dependent user is already relying on. Heading order,
+// missing landmarks, and missing page language are flagged but left for manual review: reshuffling
+// heading levels, inventing a <main> wrapper, or guessing the document's language (the only signal
+// available — the visitor's browser locale — often doesn't match the actual page content) all risk
+// making things worse rather than better, so none of them get auto-applied.
 export const AUTO_FIXABLE_CATEGORIES: ReadonlySet<IssueCategory> = new Set([
   "missingAlt",
   "missingFormLabel",
-  "unlabeledControl",
-  "missingLang"
+  "unlabeledControl"
 ])

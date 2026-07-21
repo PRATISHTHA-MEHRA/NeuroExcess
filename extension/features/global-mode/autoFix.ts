@@ -2,7 +2,6 @@ import { AUTO_FIXABLE_CATEGORIES, type AuditIssue } from "./issueTypes"
 
 const ADDED_ALT_ATTR = "data-na-added-alt"
 const ADDED_ARIA_LABEL_ATTR = "data-na-added-aria-label"
-const ADDED_LANG_ATTR = "data-na-added-lang"
 
 function humanizeFromSrc(src: string): string {
   const filename = src.split("/").pop()?.split("?")[0] ?? ""
@@ -49,12 +48,6 @@ function fixUnlabeledControl(control: HTMLElement): void {
   control.setAttribute(ADDED_ARIA_LABEL_ATTR, "true")
 }
 
-function fixLang(): void {
-  const guess = navigator.language?.split("-")[0] || "en"
-  document.documentElement.setAttribute("lang", guess)
-  document.documentElement.setAttribute(ADDED_LANG_ATTR, "true")
-}
-
 export interface FixOutcome {
   fixed: AuditIssue[]
   needsReview: AuditIssue[]
@@ -81,9 +74,6 @@ export function applyAutoFixes(issues: AuditIssue[]): FixOutcome {
       case "unlabeledControl":
         fixUnlabeledControl(issue.element as HTMLElement)
         break
-      case "missingLang":
-        fixLang()
-        break
     }
     fixed.push(issue)
   }
@@ -101,8 +91,4 @@ export function revertAutoFixes(): void {
     el.removeAttribute("aria-label")
     el.removeAttribute(ADDED_ARIA_LABEL_ATTR)
   })
-  if (document.documentElement.hasAttribute(ADDED_LANG_ATTR)) {
-    document.documentElement.removeAttribute("lang")
-    document.documentElement.removeAttribute(ADDED_LANG_ATTR)
-  }
 }

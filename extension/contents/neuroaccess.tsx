@@ -29,6 +29,17 @@ export const getStyle = () => {
 
 export const getShadowHostId = () => "neuroaccess-shadow-host"
 
+// Feature controllers walk arbitrary, unpredictable third-party page DOM — an exception from one
+// of them must never propagate into React. There's no error boundary in this content script, so
+// an uncaught error here would unmount the *entire* tree (React's default with no boundary),
+// silently killing every other feature — including Read Aloud — along with the one that failed.
+function runFeature(name: string, fn: () => void): void {
+  try {
+    fn()
+  } catch (error) {
+    console.error(`[NeuroAccess] "${name}" feature failed:`, error)
+  }
+}
 
 export default function NeuroAccessRoot() {
   const [settings, setSettings] = useState<GlobalSettings>(DEFAULT_GLOBAL_SETTINGS)
@@ -39,9 +50,10 @@ export default function NeuroAccessRoot() {
     const unsubscribe = watchEffectiveSettings(location.hostname, setSettings)
     return () => {
       unsubscribe()
-      calmThemeController.remove()
-      skipLinksController.remove()
-      globalModeController.remove()
+      runFeature("contrastFixer", () => contrastFixerController.remove())
+      runFeature("calmTheme", () => calmThemeController.remove())
+      runFeature("skipLinks", () => skipLinksController.remove())
+      runFeature("globalMode", () => globalModeController.remove())
     }
   }, [])
 
@@ -61,41 +73,49 @@ export default function NeuroAccessRoot() {
 
   const contrastKey = JSON.stringify(settings.contrastFixer)
   useEffect(() => {
-    if (settings.contrastFixer.enabled) {
-      contrastFixerController.apply(settings.contrastFixer)
-    } else {
-      contrastFixerController.remove()
-    }
+    runFeature("contrastFixer", () => {
+      if (settings.contrastFixer.enabled) {
+        contrastFixerController.apply(settings.contrastFixer)
+      } else {
+        contrastFixerController.remove()
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contrastKey])
 
   const calmThemeKey = JSON.stringify(settings.calmTheme)
   useEffect(() => {
-    if (settings.calmTheme.enabled) {
-      calmThemeController.apply(settings.calmTheme)
-    } else {
-      calmThemeController.remove()
-    }
+    runFeature("calmTheme", () => {
+      if (settings.calmTheme.enabled) {
+        calmThemeController.apply(settings.calmTheme)
+      } else {
+        calmThemeController.remove()
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calmThemeKey])
 
   const skipLinksKey = JSON.stringify(settings.skipLinks)
   useEffect(() => {
-    if (settings.skipLinks.enabled) {
-      skipLinksController.apply(settings.skipLinks)
-    } else {
-      skipLinksController.remove()
-    }
+    runFeature("skipLinks", () => {
+      if (settings.skipLinks.enabled) {
+        skipLinksController.apply(settings.skipLinks)
+      } else {
+        skipLinksController.remove()
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skipLinksKey])
 
   const globalModeKey = JSON.stringify(settings.globalMode)
   useEffect(() => {
-    if (settings.globalMode.enabled) {
-      globalModeController.apply(settings.globalMode)
-    } else {
-      globalModeController.remove()
-    }
+    runFeature("globalMode", () => {
+      if (settings.globalMode.enabled) {
+        globalModeController.apply(settings.globalMode)
+      } else {
+        globalModeController.remove()
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalModeKey])
 

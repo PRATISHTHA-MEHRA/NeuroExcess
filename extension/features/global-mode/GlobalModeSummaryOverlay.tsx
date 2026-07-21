@@ -19,13 +19,16 @@ export function GlobalModeSummaryOverlay({ enabled, hostname }: GlobalModeSummar
 
   if (!enabled || dismissed || !summary) return null
 
+  const fixedCategories = summary.categories.filter((c) => c.fixed > 0)
+  const reviewCategories = summary.categories.filter((c) => c.found > c.fixed)
+
   return (
     <div
       role="status"
       aria-live="polite"
       style={{
         position: "fixed",
-        right: 16,
+        left: 16,
         bottom: 16,
         zIndex: OVERLAY_Z_INDEX,
         width: 300,
@@ -64,6 +67,47 @@ export function GlobalModeSummaryOverlay({ enabled, hostname }: GlobalModeSummar
           </>
         ) : null}
       </p>
+      {summary.totalIssues > 0 ? (
+        <details style={{ marginTop: 8 }}>
+          <summary style={{ cursor: "pointer", color: "#9CA3AF" }}>Details</summary>
+          <div
+            style={{
+              marginTop: 6,
+              paddingTop: 6,
+              borderTop: "1px solid #374151",
+              display: "flex",
+              flexDirection: "column",
+              gap: 8
+            }}>
+            {fixedCategories.length > 0 ? (
+              <div>
+                <div style={{ color: "#34D399", fontWeight: 600 }}>Fixed automatically</div>
+                {fixedCategories.map((c) => (
+                  <div
+                    key={c.category}
+                    style={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+                    <span>{c.label}</span>
+                    <span>{c.fixed}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+            {reviewCategories.length > 0 ? (
+              <div>
+                <div style={{ color: "#FBBF24", fontWeight: 600 }}>Needs manual review</div>
+                {reviewCategories.map((c) => (
+                  <div
+                    key={c.category}
+                    style={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+                    <span>{c.label}</span>
+                    <span>{c.found - c.fixed}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </details>
+      ) : null}
     </div>
   )
 }

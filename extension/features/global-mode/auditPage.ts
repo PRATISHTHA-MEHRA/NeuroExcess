@@ -10,7 +10,19 @@ function hasAccessibleName(el: HTMLElement): boolean {
   if (el.getAttribute("aria-label")?.trim()) return true
   if (el.getAttribute("aria-labelledby")) return true
   if (el.getAttribute("title")?.trim()) return true
-  return (el.textContent ?? "").trim().length > 0
+  if ((el.textContent ?? "").trim().length > 0) return true
+
+  // A descendant <img alt="..."> or labelled <svg> is a legitimate accessible-name source too —
+  // without this, a well-labelled icon button/link (e.g. <button><img alt="Close"></button>)
+  // gets flagged and then re-labelled "Button"/"Link" by fixUnlabeledControl, which actually
+  // overrides the image's alt as the accessible name and makes the control worse, not better.
+  const namedImage = el.querySelector<HTMLImageElement>("img[alt]")
+  if (namedImage?.alt.trim()) return true
+  const namedSvg = el.querySelector("svg")
+  if (namedSvg?.querySelector("title")?.textContent?.trim()) return true
+  if (namedSvg?.getAttribute("aria-label")?.trim()) return true
+
+  return false
 }
 
 /** Query a selector against `root` itself plus its descendants — plain querySelectorAll skips the root. */
