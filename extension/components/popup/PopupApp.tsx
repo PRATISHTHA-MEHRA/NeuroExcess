@@ -96,6 +96,15 @@ export function PopupApp() {
           isOverridden={override.skipLinks !== undefined}
           onToggle={(enabled) => applyPatch("skipLinks", { enabled })}
         />
+
+        <FeatureToggleRow
+          icon={FEATURE_META.voiceCommands.icon}
+          label={FEATURE_META.voiceCommands.label}
+          description={FEATURE_META.voiceCommands.description}
+          enabled={effective.voiceCommands.enabled}
+          isOverridden={override.voiceCommands !== undefined}
+          onToggle={(enabled) => applyPatch("voiceCommands", { enabled })}
+        />
       </div>
       <button
         type="button"

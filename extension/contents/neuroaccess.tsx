@@ -7,6 +7,7 @@ import { contrastFixerController } from "~features/contrast-fixer"
 import { RulerOverlay } from "~features/reading-ruler/RulerOverlay"
 import { skipLinksController } from "~features/skip-links"
 import { ReadingBarOverlay } from "~features/syllable-highlighting/ReadingBarOverlay"
+import { VoiceCommandsOverlay } from "~features/voice-commands/VoiceCommandsOverlay"
 import { DEFAULT_GLOBAL_SETTINGS } from "~lib/settings/defaults"
 import type { GlobalSettings } from "~lib/settings/schema"
 import { watchEffectiveSettings } from "~lib/settings/store"
@@ -77,6 +78,7 @@ export default function NeuroAccessRoot() {
     <>
       <RulerOverlay settings={settings.readingRuler} />
       <ReadingBarOverlay settings={settings.syllableHighlighting} />
+      <VoiceCommandsOverlay settings={settings.voiceCommands} />
     </>
   )
 }

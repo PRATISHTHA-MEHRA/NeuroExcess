@@ -31,5 +31,10 @@ export const FEATURE_META: Record<FeatureId, FeatureMeta> = {
     icon: "\u{23ED}️",
     label: "Skip Links",
     description: "Jump past repetitive navigation with the keyboard"
+  },
+  voiceCommands: {
+    icon: "\u{1F3A4}",
+    label: "Voice Commands",
+    description: 'Say "scroll down", "next section", or "click login"'
   }
 }
