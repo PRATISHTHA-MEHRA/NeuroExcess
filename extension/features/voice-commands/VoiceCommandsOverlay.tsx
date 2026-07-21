@@ -71,13 +71,13 @@ export function VoiceCommandsOverlay({ settings }: VoiceCommandsOverlayProps) {
     <div
       style={{
         position: "fixed",
-        right: 12,
+        left: 12,
         bottom: 12,
         zIndex: OVERLAY_Z_INDEX,
         display: "flex",
         flexDirection: "column",
         gap: 6,
-        alignItems: "flex-end"
+        alignItems: "flex-start"
       }}>
       {toast ? (
         <div

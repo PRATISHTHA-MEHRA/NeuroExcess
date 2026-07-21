@@ -131,5 +131,20 @@ export function executeVoiceAction(action: VoiceAction): boolean {
       }
       return false
     }
+    case "readPage":
+      window.dispatchEvent(new CustomEvent("neuroaccess:local-read-page"))
+      return true
+    case "readSelection":
+      window.dispatchEvent(new CustomEvent("neuroaccess:local-read-selection"))
+      return true
+    case "stopReading":
+      window.dispatchEvent(new CustomEvent("neuroaccess:local-stop-reading"))
+      return true
+    case "pauseReading":
+      window.dispatchEvent(new CustomEvent("neuroaccess:local-pause-reading"))
+      return true
+    case "resumeReading":
+      window.dispatchEvent(new CustomEvent("neuroaccess:local-resume-reading"))
+      return true
   }
 }

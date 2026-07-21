@@ -7,6 +7,11 @@ export type VoiceAction =
   | { type: "mediaControl"; action: "play" | "pause" | "mute" }
   | { type: "stopListening" }
   | { type: "typeText"; text: string }
+  | { type: "readPage" }
+  | { type: "readSelection" }
+  | { type: "stopReading" }
+  | { type: "pauseReading" }
+  | { type: "resumeReading" }
 
 export interface CommandMatch {
   action: VoiceAction
@@ -60,6 +65,41 @@ const RULES: CommandRule[] = [
     label: "go back",
     test: (p) =>
       p.includes("go back") || p === "back" ? { type: "goBack" } : undefined
+  },
+  {
+    label: "read page",
+    test: (p) =>
+      p.includes("read") && (p.includes("page") || p.includes("full") || p.includes("all"))
+        ? { type: "readPage" }
+        : undefined
+  },
+  {
+    label: "read selection",
+    test: (p) =>
+      p.includes("read") && (p.includes("selection") || p.includes("selected") || p.includes("text"))
+        ? { type: "readSelection" }
+        : undefined
+  },
+  {
+    label: "stop reading",
+    test: (p) =>
+      p.includes("stop") && (p.includes("read") || p.includes("speak") || p.includes("tts"))
+        ? { type: "stopReading" }
+        : undefined
+  },
+  {
+    label: "pause reading",
+    test: (p) =>
+      p.includes("pause") && (p.includes("read") || p.includes("speak") || p.includes("tts"))
+        ? { type: "pauseReading" }
+        : undefined
+  },
+  {
+    label: "resume reading",
+    test: (p) =>
+      p.includes("resume") && (p.includes("read") || p.includes("speak") || p.includes("tts"))
+        ? { type: "resumeReading" }
+        : undefined
   },
   {
     label: "play",

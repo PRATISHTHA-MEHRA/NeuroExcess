@@ -20,6 +20,8 @@ interface CoreSpeakOptions {
   onEnd: () => void
 }
 
+let activeUtterance: SpeechSynthesisUtterance | null = null
+
 /**
  * Low-level utterance lifecycle shared by both the syllable-highlighting overlay
  * (speakWithSyllableHighlight) and the standalone full-page/selection reader
@@ -35,15 +37,32 @@ export function createTtsController(text: string, options: CoreSpeakOptions): Tt
     options.onBoundary?.(event.charIndex, event.charLength)
   })
 
-  const finish = () => options.onEnd()
+  const finish = () => {
+    if (activeUtterance === utterance) {
+      activeUtterance = null
+    }
+    options.onEnd()
+  }
   utterance.addEventListener("end", finish)
   utterance.addEventListener("error", finish)
 
   return {
-    play: () => speechSynthesis.speak(utterance),
-    pause: () => speechSynthesis.pause(),
-    resume: () => speechSynthesis.resume(),
-    stop: () => speechSynthesis.cancel()
+    play: () => {
+      activeUtterance = utterance
+      speechSynthesis.speak(utterance)
+    },
+    pause: () => {
+      speechSynthesis.pause()
+    },
+    resume: () => {
+      speechSynthesis.resume()
+    },
+    stop: () => {
+      if (activeUtterance === utterance) {
+        activeUtterance = null
+      }
+      speechSynthesis.cancel()
+    }
   }
 }
 
