@@ -21,21 +21,78 @@ interface CoreSpeakOptions {
 }
 
 let activeUtterance: SpeechSynthesisUtterance | null = null
+const MAX_CHUNK_CHARS = 200
+
+/**
+ * Chrome's speechSynthesis silently fails (or cuts speech off) on a single very long utterance —
+ * fine for a manual text selection, but "read whole page" easily produces several thousand
+ * characters and runs straight into it. Splitting into sentence-sized chunks (hard-wrapped at
+ * word boundaries if a single sentence is still too long) and speaking them one at a time via
+ * chained `end` events keeps every individual utterance well under that limit.
+ */
+function splitIntoChunks(text: string): string[] {
+  const sentences = text.match(/[^.!?]+[.!?]+(\s+|$)|[^.!?]+$/g) ?? [text]
+  const chunks: string[] = []
+
+  for (const sentence of sentences) {
+    const trimmed = sentence.trim()
+    if (!trimmed) continue
+
+    if (trimmed.length <= MAX_CHUNK_CHARS) {
+      chunks.push(trimmed)
+      continue
+    }
+
+    let piece = ""
+    for (const word of trimmed.split(/\s+/)) {
+      const next = piece ? `${piece} ${word}` : word
+      if (next.length > MAX_CHUNK_CHARS && piece) {
+        chunks.push(piece)
+        piece = word
+      } else {
+        piece = next
+      }
+    }
+    if (piece) chunks.push(piece)
+  }
+
+  return chunks.length > 0 ? chunks : [text]
+}
 
 /**
  * Low-level utterance lifecycle shared by both the syllable-highlighting overlay
  * (speakWithSyllableHighlight) and the standalone full-page/selection reader
  * (StandaloneReaderWidget). Callers own text extraction and any highlighting logic;
- * this just wraps the native SpeechSynthesisUtterance play/pause/resume/stop lifecycle.
+ * this just wraps the native SpeechSynthesisUtterance play/pause/resume/stop lifecycle,
+ * transparently chunking long text so it actually plays.
  */
 export function createTtsController(text: string, options: CoreSpeakOptions): TtsPlaybackHandle {
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.rate = options.rate
+  const chunks = splitIntoChunks(text)
+  const offsets: number[] = []
+  {
+    let running = 0
+    for (const chunk of chunks) {
+      offsets.push(running)
+      running += chunk.length + 1
+    }
+  }
 
-  utterance.addEventListener("boundary", (event) => {
-    if (event.name !== "word") return
-    options.onBoundary?.(event.charIndex, event.charLength)
-  })
+  let stopped = false
+
+  function speakChunk(index: number): void {
+    if (stopped) return
+    if (index >= chunks.length) {
+      options.onEnd()
+      return
+    }
+
+    const utterance = new SpeechSynthesisUtterance(chunks[index])
+    utterance.rate = options.rate
+
+    utterance.addEventListener("boundary", (event) => {
+      if (event.name !== "word") return
+      options.onBoundary?.(offsets[index] + event.charIndex, event.charLength)
+    })
 
   const finish = () => {
     if (activeUtterance === utterance) {
@@ -61,6 +118,22 @@ export function createTtsController(text: string, options: CoreSpeakOptions): Tt
       if (activeUtterance === utterance) {
         activeUtterance = null
       }
+    const next = () => speakChunk(index + 1)
+    utterance.addEventListener("end", next)
+    utterance.addEventListener("error", next)
+
+    speechSynthesis.speak(utterance)
+  }
+
+  return {
+    play: () => {
+      stopped = false
+      speakChunk(0)
+    },
+    pause: () => speechSynthesis.pause(),
+    resume: () => speechSynthesis.resume(),
+    stop: () => {
+      stopped = true
       speechSynthesis.cancel()
     }
   }

@@ -36,5 +36,10 @@ export const FEATURE_META: Record<FeatureId, FeatureMeta> = {
     icon: "\u{1F3A4}",
     label: "Voice Commands",
     description: 'Say "scroll down", "next section", or "click login"'
+  },
+  globalMode: {
+    icon: "\u{1F5B1}️",
+    label: "Global Accessibility Mode",
+    description: "One-click page audit with safe automatic fixes"
   }
 }

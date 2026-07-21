@@ -34,5 +34,8 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
   },
   voiceCommands: {
     enabled: false
+  },
+  globalMode: {
+    enabled: false
   }
 }
