@@ -1,6 +1,6 @@
 import { getContrast, hsla, parseToHsla } from "color2k"
 
-import { NEUROACCESS_OWN_ELEMENT_SELECTOR } from "~lib/dom/ownElements"
+// import { NEUROACCESS_OWN_ELEMENT_SELECTOR } from "~lib/dom/ownElements"
 import type { ContrastLevel } from "~lib/settings/schema"
 
 const TARGET_RATIOS: Record<ContrastLevel, number> = { AA: 4.5, AAA: 7 }

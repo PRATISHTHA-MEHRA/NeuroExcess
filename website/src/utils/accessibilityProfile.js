@@ -1,9 +1,8 @@
-
 export const ACCESSIBILITY_FEATURE_MAP = {
   blindness: {
     label: 'Blindness',
     features: [
-      { text: 'AI image descriptions (OCR + captioning)', available: false },
+      { text: 'Voice commands for hands-free navigation', available: true },
     ],
   },
   low_vision: {
@@ -22,7 +21,7 @@ export const ACCESSIBILITY_FEATURE_MAP = {
     label: 'Dyslexia',
     features: [
       { text: 'Syllable highlighting while reading', available: true },
-      { text: 'Text-to-speech read-aloud', available: false },
+      { text: 'Reading Ruler', available: true },
     ],
   },
   adhd_focus_difficulties: {
@@ -41,6 +40,7 @@ export const ACCESSIBILITY_FEATURE_MAP = {
     label: 'Motor Impairment',
     features: [
       { text: 'Skip links for keyboard navigation', available: true },
+      { text: 'Voice commands for hands-free control', available: true },
     ],
   },
   temporary_impairment: {

@@ -2,8 +2,6 @@ import { clearAuthSession, setAuthSession } from "~lib/auth/session"
 import { deriveSettingsPatchFromProfile } from "~lib/settings/profile/deriveSettingsPatch"
 import { setGlobalSettings } from "~lib/settings/store"
 
-
-
 interface AuthMessage {
   type: "NEUROEXCESS_AUTH"
   token: string
@@ -52,6 +50,7 @@ async function handleAuth(message: AuthMessage): Promise<void> {
   const patch = deriveSettingsPatchFromProfile(accessibilityNeeds)
   await setGlobalSettings(patch)
 }
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "read-selection-aloud",
