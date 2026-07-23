@@ -1,4 +1,4 @@
-// import { NEUROACCESS_OWN_ELEMENT_SELECTOR } from "~lib/dom/ownElements"
+import { NEUROACCESS_OWN_ELEMENT_SELECTOR } from "~lib/dom/ownElements"
 
 import type { AuditIssue } from "./issueTypes"
 
