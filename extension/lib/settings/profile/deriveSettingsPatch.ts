@@ -22,7 +22,8 @@ export const PROFILE_PATCHES: Partial<Record<string, SettingsPatch>> = {
     
   },
   adhd_focus_difficulties: {
-    calmTheme: { enabled: true, reduceMotion: true, declutter: true }
+    calmTheme: { enabled: true, reduceMotion: true, declutter: true },
+     readingRuler: { enabled: true }
   },
   autism_sensory_sensitivity: {
     calmTheme: { enabled: true, desaturate: true, reduceMotion: true }

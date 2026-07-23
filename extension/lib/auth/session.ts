@@ -9,10 +9,7 @@ export interface AuthSession {
 
 const AUTH_SESSION_KEY = "auth:session"
 
-// Deliberately `area: "local"`, not the `"sync"` area globalStorage uses —
-// a JWT shouldn't get copied across the user's signed-in browsers via
-// chrome.storage.sync, and per-device sessions are the safer default
-// regardless.
+
 export const authStorage = new Storage({ area: "local" })
 
 export async function getAuthSession(): Promise<AuthSession | undefined> {

@@ -1,5 +1,5 @@
 import { clearAuthSession, setAuthSession } from "~lib/auth/session"
-// import { dataURLtoBlob, fetchImageBlob, sendImageToBackend } from "~lib/ai/backendClient"
+import { dataURLtoBlob, fetchImageBlob, sendImageToBackend } from "~lib/ai/backendClient"
 import { deriveSettingsPatchFromProfile } from "~lib/settings/profile/deriveSettingsPatch"
 import { setGlobalSettings } from "~lib/settings/store"
 
